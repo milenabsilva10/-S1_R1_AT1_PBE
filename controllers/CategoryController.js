@@ -1,8 +1,9 @@
-import Categorias from '../models/categorias.js'
+import CategoryService from "../services/CategoryService.js"
 
-async function index(req, res) {
+class CategoryController{
+async index(req, res) {
     try{
-    const categorias = await Categorias.getALLCategory();
+    const categorias = await CategoryService.getALLCategory();
    return res.json(categorias);
 }   catch (error) {
     console.log(error);
@@ -10,23 +11,23 @@ async function index(req, res) {
 }  
 }
 
-async function store(req, res) {
+async store(req, res) {
     try {
         const categorias = req.body;
 
-        await Categorias.createCategory(categorias);
+        await CategoryService.createCategory(categorias);
         res.status(201).json({message: "Novas Categorias cadastradas com sucesso!"});
     } catch (error) {
         res.status(500).json({error:"Erro ao criar categoria" });
     }
 }
 
-async function update(req, res) {
+async update(req, res) {
     try{
         const {id} = req.params;
         const categorias = req.body;
 
-        await Categorias.updateCategory(id, categorias)
+        await CategoryService.updateCategory(id, categorias)
         res.status(201). json({message:" Categorias atualizadas com sucesso!"})
     }catch (error){
         res.json({error:"Erro ao atualizar categorias"})
@@ -35,15 +36,19 @@ async function update(req, res) {
 }
 
 
-async function destroy(req, res) {
+async destroy(req, res) {
     try{
         const { id } = req.params;
 
-        await Categorias.deleteCategory(id);
+        await CategoryService.deleteCategory(id);
         res.status(200).json({message: "Categorias removidas com sucesso!"})
     } catch (error) {
         res.json({ message: "Erro ao remover as categorias! "})
     }
 }
 
-export default {index, store, update, destroy}
+}
+
+export default new CategoryController();
+
+
